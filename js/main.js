@@ -1,6 +1,5 @@
 import UserFunc from './UserFunc.js'
-import func from "./func.js";
-import { kattaHarf } from "./func.js";
+import render from "./render.js";
 
 let form = document.getElementById('form')
 let ism = document.getElementById('userIsm')
@@ -26,28 +25,24 @@ if (code) {
 form.addEventListener('submit', function (event) {
     event.preventDefault()
     // yangi object yaratish
-    let newObject = new UserFunc(kattaHarf(ism.value),kattaHarf(fam.value),kattaHarf(guruh.value),jins.value)
-
-    //tr yasahs 
-    sana++
-    tbody.prepend(func(newObject.UserIsmi,newObject.UserFam,newObject.UserGuruh,newObject.UserJinsi,sana))
+    let newObject = new UserFunc(ism.value,fam.value,guruh.value,jins.value)
 
     // dataga push qilish
-    data.push(newObject)
+    data.unshift(newObject)
 
+    render(tbody, data)
+    
+    
     // storagega push qilish
     storage.setItem('data', JSON.stringify(data))
-
+    
     // inputni tozala
     ism.value = '';
     fam.value = '';
     guruh.value = '';
     jins.value = '';
 })
-let sana = 0;
-JSON.parse(storage.getItem('data')).forEach(key => {
-    sana++
-    tbody.prepend(func(key.UserIsmi,key.UserFam,key.UserGuruh,key.UserJinsi,sana))
-});
+render(tbody, data)
+
 
 
